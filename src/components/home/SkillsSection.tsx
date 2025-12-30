@@ -1,7 +1,9 @@
 'use client';
 
 import { css } from '@emotion/css';
-import { colors, typography, layout, spacing, radius } from '@/styles/tokens';
+import { colors, typography, layout, spacing, radius, gradientText } from '@/styles/tokens';
+import { useAppStore } from '@/stores/useAppStore';
+import { useTranslation } from '@/i18n/translations';
 
 const sectionStyles = css`
   padding: ${spacing[16]} ${layout.containerPadding};
@@ -75,36 +77,58 @@ const skillItemStyles = css`
   }
 `;
 
-interface SkillCategory {
-  title: string;
-  skills: string[];
-}
+const subsectionStyles = css`
+  margin-top: ${spacing[16]};
+`;
 
-const skillCategories: SkillCategory[] = [
-  {
-    title: 'Frontend',
-    skills: ['React / Next.js', 'TypeScript', 'HTML / CSS', 'Vue.js'],
-  },
-  {
-    title: 'Design',
-    skills: ['Figma', 'UI/UX Design', 'Design Systems', 'Prototyping'],
-  },
-  {
-    title: 'Tools',
-    skills: ['Git / GitHub', 'Storybook', 'CI/CD', 'Testing'],
-  },
-];
+const languageGridStyles = css`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${spacing[6]};
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const languageCardStyles = css`
+  padding: ${spacing[5]};
+  background: ${colors.bg};
+  border: 1px solid ${colors.border};
+  border-radius: ${radius.md};
+`;
+
+const languageNameStyles = css`
+  font-size: ${typography.h3.size};
+  font-weight: ${typography.h3.weight};
+  color: ${colors.text};
+  margin-bottom: ${spacing[2]};
+`;
+
+const languageLevelStyles = css`
+  font-size: ${typography.small.size};
+  ${gradientText}
+  margin-bottom: ${spacing[2]};
+`;
+
+const certificationStyles = css`
+  font-size: ${typography.caption.size};
+  color: ${colors.faint};
+`;
 
 export default function SkillsSection() {
+  const language = useAppStore((state) => state.language);
+  const t = useTranslation(language);
+
   return (
     <section className={sectionStyles}>
       <div className={containerStyles}>
+        {/* Skills */}
         <header className={headerStyles}>
-          <h2 className={titleStyles}>Skills</h2>
+          <h2 className={titleStyles}>{t.skills.title}</h2>
         </header>
-
         <div className={gridStyles}>
-          {skillCategories.map((category) => (
+          {t.skills.categories.map((category) => (
             <div key={category.title} className={categoryStyles}>
               <h3 className={categoryTitleStyles}>{category.title}</h3>
               <ul className={skillListStyles}>
@@ -116,6 +140,22 @@ export default function SkillsSection() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Languages */}
+        <div className={subsectionStyles}>
+          <header className={headerStyles}>
+            <h2 className={titleStyles}>{t.languages.title}</h2>
+          </header>
+          <div className={languageGridStyles}>
+            {t.languages.items.map((lang) => (
+              <div key={lang.language} className={languageCardStyles}>
+                <h3 className={languageNameStyles}>{lang.language}</h3>
+                <p className={languageLevelStyles}>{lang.level}</p>
+                <p className={certificationStyles}>{lang.certification}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

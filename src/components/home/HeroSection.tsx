@@ -3,6 +3,8 @@
 import { css } from '@emotion/css';
 import Image from 'next/image';
 import { colors, typography, layout, spacing, radius, gradientText } from '@/styles/tokens';
+import { useAppStore } from '@/stores/useAppStore';
+import { useTranslation } from '@/i18n/translations';
 
 const sectionStyles = css`
   min-height: 100vh;
@@ -72,11 +74,25 @@ const nameStyles = css`
   margin-bottom: ${spacing[3]};
 `;
 
+const locationStyles = css`
+  font-size: ${typography.small.size};
+  color: ${colors.faint};
+  margin-bottom: ${spacing[2]};
+`;
+
 const shortBioStyles = css`
   font-size: ${typography.body.size};
   line-height: ${typography.body.lineHeight};
   color: ${colors.muted};
-  max-width: 400px;
+  max-width: 600px;
+`;
+
+const interestsTextStyles = css`
+  font-size: ${typography.small.size};
+  line-height: ${typography.small.lineHeight};
+  color: ${colors.faint};
+  margin-top: ${spacing[2]};
+  font-style: italic;
 `;
 
 const linksStyles = css`
@@ -87,14 +103,19 @@ const linksStyles = css`
 
   a {
     color: ${colors.muted};
+    transition: color 0.2s ease;
+
+    &:hover {
+      ${gradientText}
+    }
   }
 `;
 
-const interestsContainerStyles = css`
+const focusContainerStyles = css`
   margin-top: ${spacing[4]};
 `;
 
-const interestsSectionTitleStyles = css`
+const focusSectionTitleStyles = css`
   font-size: ${typography.caption.size};
   font-weight: 500;
   color: ${colors.faint};
@@ -103,13 +124,13 @@ const interestsSectionTitleStyles = css`
   margin-bottom: ${spacing[3]};
 `;
 
-const interestsListStyles = css`
+const focusListStyles = css`
   display: flex;
   flex-wrap: wrap;
   gap: ${spacing[2]} ${spacing[4]};
 `;
 
-const interestItemStyles = css`
+const focusItemStyles = css`
   font-size: ${typography.small.size};
   line-height: ${typography.small.lineHeight};
   color: ${colors.muted};
@@ -126,16 +147,10 @@ const interestItemStyles = css`
   }
 `;
 
-const interests = [
-  'Design Systems',
-  'Interactive UI',
-  'Web Performance',
-  'Accessibility',
-  'Typography',
-  'Developer Experience',
-];
-
 export default function HeroSection() {
+  const language = useAppStore((state) => state.language);
+  const t = useTranslation(language);
+
   return (
     <section className={sectionStyles}>
       <div className={containerStyles}>
@@ -143,7 +158,7 @@ export default function HeroSection() {
           <div className={profileImageContainerStyles}>
             <Image
               src="/images/profileImage.jpeg"
-              alt="Seungmok profile"
+              alt={t.hero.name}
               width={293}
               height={391}
               className={profileImageStyles}
@@ -151,28 +166,27 @@ export default function HeroSection() {
             />
           </div>
           <div className={headerTextStyles}>
-            <p className={roleStyles}>Frontend Designer</p>
-            <h1 className={nameStyles}>Seungmok</h1>
-            <p className={shortBioStyles}>
-              디지털 경험을 설계하고 구현합니다. 사용자 중심의 인터페이스와
-              깔끔한 코드를 통해 가치 있는 제품을 만드는 것을 좋아합니다.
-            </p>
+            <p className={roleStyles}>{t.hero.role}</p>
+            <h1 className={nameStyles}>{t.hero.name}</h1>
+            <p className={locationStyles}>{t.hero.location}</p>
+            <p className={shortBioStyles}>{t.hero.bio}</p>
+            <p className={interestsTextStyles}>{t.hero.interests}</p>
             <div className={linksStyles}>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/udfnd" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/in/hsm9300/" target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </a>
-              <a href="mailto:hello@udfnd.com">Email</a>
+              <a href="mailto:hsm9300@naver.com">Email</a>
             </div>
 
-            <div className={interestsContainerStyles}>
-              <p className={interestsSectionTitleStyles}>What I Focus On</p>
-              <div className={interestsListStyles}>
-                {interests.map((interest) => (
-                  <span key={interest} className={interestItemStyles}>
-                    {interest}
+            <div className={focusContainerStyles}>
+              <p className={focusSectionTitleStyles}>{t.hero.focusTitle}</p>
+              <div className={focusListStyles}>
+                {t.hero.focuses.map((focus) => (
+                  <span key={focus} className={focusItemStyles}>
+                    {focus}
                   </span>
                 ))}
               </div>

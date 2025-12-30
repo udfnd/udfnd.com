@@ -2,6 +2,8 @@
 
 import { css } from '@emotion/css';
 import { colors, typography, layout, spacing, gradientText, gradientTextHover } from '@/styles/tokens';
+import { useAppStore } from '@/stores/useAppStore';
+import { useTranslation } from '@/i18n/translations';
 
 const sectionStyles = css`
   padding: ${spacing[16]} ${layout.containerPadding};
@@ -39,16 +41,16 @@ const emailStyles = css`
 `;
 
 export default function ContactSection() {
+  const language = useAppStore((state) => state.language);
+  const t = useTranslation(language);
+
   return (
     <section id="contact" className={sectionStyles}>
       <div className={containerStyles}>
-        <h2 className={titleStyles}>Contact</h2>
-        <p className={descriptionStyles}>
-          새로운 프로젝트나 협업 기회에 대해 이야기하고 싶으시다면
-          언제든지 연락해 주세요.
-        </p>
-        <a href="mailto:hello@udfnd.com" className={emailStyles}>
-          hello@udfnd.com
+        <h2 className={titleStyles}>{t.contact.title}</h2>
+        <p className={descriptionStyles}>{t.contact.description}</p>
+        <a href="mailto:hsm9300@naver.com" className={emailStyles}>
+          hsm9300@naver.com
         </a>
       </div>
     </section>

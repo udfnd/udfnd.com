@@ -2,6 +2,8 @@
 
 import { css } from '@emotion/css';
 import { colors, typography, layout, spacing, radius, gradientText } from '@/styles/tokens';
+import { useAppStore } from '@/stores/useAppStore';
+import { useTranslation } from '@/i18n/translations';
 
 const sectionStyles = css`
   padding: ${spacing[16]} ${layout.containerPadding};
@@ -67,6 +69,12 @@ const periodStyles = css`
 const roleStyles = css`
   font-size: ${typography.small.size};
   ${gradientText}
+  margin-bottom: ${spacing[1]};
+`;
+
+const locationStyles = css`
+  font-size: ${typography.caption.size};
+  color: ${colors.faint};
   margin-bottom: ${spacing[3]};
 `;
 
@@ -92,67 +100,170 @@ const tagStyles = css`
   border-radius: ${radius.sm};
 `;
 
-interface Experience {
-  company: string;
-  role: string;
-  period: string;
-  description: string;
-  technologies: string[];
-}
+const subsectionStyles = css`
+  margin-top: ${spacing[16]};
+`;
 
-const experiences: Experience[] = [
-  {
-    company: 'Company Name',
-    role: 'Senior Frontend Designer',
-    period: '2022 - Present',
-    description:
-      '사용자 중심의 웹 애플리케이션을 설계하고 개발합니다. 디자인 시스템을 구축하고 팀의 프론트엔드 개발 문화를 이끌고 있습니다.',
-    technologies: ['React', 'TypeScript', 'Next.js', 'Figma'],
-  },
-  {
-    company: 'Previous Company',
-    role: 'Frontend Developer',
-    period: '2020 - 2022',
-    description:
-      '다양한 B2B 프로젝트에서 프론트엔드 개발을 담당했습니다. 사용자 경험 개선과 성능 최적화에 집중했습니다.',
-    technologies: ['Vue.js', 'JavaScript', 'SCSS', 'Storybook'],
-  },
-  {
-    company: 'First Company',
-    role: 'UI Developer',
-    period: '2018 - 2020',
-    description:
-      '웹 퍼블리싱과 UI 개발로 커리어를 시작했습니다. 반응형 웹과 크로스 브라우저 호환성에 대한 깊은 이해를 쌓았습니다.',
-    technologies: ['HTML', 'CSS', 'JavaScript', 'jQuery'],
-  },
-];
+const educationItemStyles = css`
+  padding-bottom: ${spacing[6]};
+  border-bottom: 1px solid ${colors.border};
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+`;
+
+const schoolStyles = css`
+  font-size: ${typography.h3.size};
+  font-weight: ${typography.h3.weight};
+  line-height: ${typography.h3.lineHeight};
+  color: ${colors.text};
+`;
+
+const degreeStyles = css`
+  font-size: ${typography.small.size};
+  ${gradientText}
+  margin-bottom: ${spacing[1]};
+`;
+
+const projectItemStyles = css`
+  padding-bottom: ${spacing[6]};
+  border-bottom: 1px solid ${colors.border};
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+`;
+
+const projectNameStyles = css`
+  font-size: ${typography.h3.size};
+  font-weight: ${typography.h3.weight};
+  line-height: ${typography.h3.lineHeight};
+  color: ${colors.text};
+`;
+
+const organizationStyles = css`
+  font-size: ${typography.small.size};
+  color: ${colors.faint};
+  margin-bottom: ${spacing[2]};
+`;
+
+const awardItemStyles = css`
+  padding-bottom: ${spacing[6]};
+  border-bottom: 1px solid ${colors.border};
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+`;
+
+const awardNameStyles = css`
+  font-size: ${typography.h3.size};
+  font-weight: ${typography.h3.weight};
+  line-height: ${typography.h3.lineHeight};
+  color: ${colors.text};
+`;
+
+const issuerStyles = css`
+  font-size: ${typography.small.size};
+  ${gradientText}
+  margin-bottom: ${spacing[1]};
+`;
 
 export default function ExperienceSection() {
+  const language = useAppStore((state) => state.language);
+  const t = useTranslation(language);
+
   return (
     <section id="experience" className={sectionStyles}>
       <div className={containerStyles}>
+        {/* Experience */}
         <header className={headerStyles}>
-          <h2 className={titleStyles}>Experience</h2>
+          <h2 className={titleStyles}>{t.experience.title}</h2>
         </header>
-
         <div className={listStyles}>
-          {experiences.map((exp, index) => (
+          {t.experience.items.map((exp, index) => (
             <article key={index} className={itemStyles}>
               <div className={itemHeaderStyles}>
                 <h3 className={companyStyles}>{exp.company}</h3>
                 <span className={periodStyles}>{exp.period}</span>
               </div>
               <p className={roleStyles}>{exp.role}</p>
+              <p className={locationStyles}>{exp.location}</p>
               <p className={descriptionStyles}>{exp.description}</p>
-              <div className={tagsStyles}>
-                {exp.technologies.map((tech) => (
-                  <span key={tech} className={tagStyles}>
-                    {tech}
-                  </span>
-                ))}
-              </div>
+              {exp.technologies.length > 0 && (
+                <div className={tagsStyles}>
+                  {exp.technologies.map((tech) => (
+                    <span key={tech} className={tagStyles}>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              )}
             </article>
           ))}
+        </div>
+
+        {/* Education */}
+        <div className={subsectionStyles}>
+          <header className={headerStyles}>
+            <h2 className={titleStyles}>{t.education.title}</h2>
+          </header>
+          <div className={listStyles}>
+            {t.education.items.map((edu, index) => (
+              <article key={index} className={educationItemStyles}>
+                <div className={itemHeaderStyles}>
+                  <h3 className={schoolStyles}>{edu.school}</h3>
+                  <span className={periodStyles}>{edu.period}</span>
+                </div>
+                <p className={degreeStyles}>{edu.degree}</p>
+                {edu.description && (
+                  <p className={descriptionStyles}>{edu.description}</p>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Projects */}
+        <div className={subsectionStyles}>
+          <header className={headerStyles}>
+            <h2 className={titleStyles}>{t.projects.title}</h2>
+          </header>
+          <div className={listStyles}>
+            {t.projects.items.map((project, index) => (
+              <article key={index} className={projectItemStyles}>
+                <div className={itemHeaderStyles}>
+                  <h3 className={projectNameStyles}>{project.name}</h3>
+                  <span className={periodStyles}>{project.period}</span>
+                </div>
+                <p className={organizationStyles}>{project.organization}</p>
+                <p className={descriptionStyles}>{project.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Awards */}
+        <div className={subsectionStyles}>
+          <header className={headerStyles}>
+            <h2 className={titleStyles}>{t.awards.title}</h2>
+          </header>
+          <div className={listStyles}>
+            {t.awards.items.map((award, index) => (
+              <article key={index} className={awardItemStyles}>
+                <div className={itemHeaderStyles}>
+                  <h3 className={awardNameStyles}>{award.name}</h3>
+                  <span className={periodStyles}>{award.year}</span>
+                </div>
+                <p className={issuerStyles}>{award.issuer}</p>
+                <p className={descriptionStyles}>{award.description}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

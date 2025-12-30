@@ -3,7 +3,9 @@
 import { css } from '@emotion/css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { colors, typography, layout, spacing, transition, gradientText } from '@/styles/tokens';
+import { colors, typography, layout, spacing, transition, radius, gradientText } from '@/styles/tokens';
+import { useAppStore } from '@/stores/useAppStore';
+import { useTranslation } from '@/i18n/translations';
 
 const navStyles = css`
   position: fixed;
@@ -61,12 +63,35 @@ const activeMenuItemStyles = css`
   ${gradientText}
 `;
 
+const languageButtonStyles = css`
+  font-size: ${typography.small.size};
+  font-weight: 500;
+  color: ${colors.muted};
+  background: ${colors.surface};
+  border: 1px solid ${colors.border};
+  border-radius: ${radius.sm};
+  padding: ${spacing[1]} ${spacing[3]};
+  cursor: pointer;
+  transition: all ${transition.normal};
+  display: flex;
+  align-items: center;
+  gap: ${spacing[1]};
+
+  &:hover {
+    border-color: ${colors.accent.solid};
+    color: ${colors.text};
+  }
+`;
+
 export default function Navigation() {
   const pathname = usePathname();
+  const language = useAppStore((state) => state.language);
+  const toggleLanguage = useAppStore((state) => state.toggleLanguage);
+  const t = useTranslation(language);
 
   const menuItems = [
-    { href: '/', label: 'Home' },
-    { href: '/blog', label: 'Blog' },
+    { href: '/', label: t.nav.home },
+    { href: '/blog', label: t.nav.blog },
   ];
 
   return (
@@ -94,6 +119,15 @@ export default function Navigation() {
               </li>
             );
           })}
+          <li>
+            <button
+              onClick={toggleLanguage}
+              className={languageButtonStyles}
+              aria-label={language === 'ko' ? 'Switch to English' : '한국어로 전환'}
+            >
+              {language === 'ko' ? 'EN' : '한국어'}
+            </button>
+          </li>
         </ul>
       </div>
     </nav>

@@ -5,7 +5,7 @@ import { Navigation, Footer } from '@/components/layout';
 
 export const metadata: Metadata = {
   title: {
-    default: 'udfnd | Frontend Designer',
+    default: 'Welcome to udfnd',
     template: '%s | udfnd',
   },
   description:
