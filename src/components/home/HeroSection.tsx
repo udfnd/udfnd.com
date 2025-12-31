@@ -7,7 +7,7 @@ import { useAppStore } from '@/stores/useAppStore';
 import { useTranslation } from '@/i18n/translations';
 
 const sectionStyles = css`
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,9 +97,11 @@ const interestsTextStyles = css`
 
 const linksStyles = css`
   display: flex;
+  align-items: center;
   gap: ${spacing[4]};
   margin-top: ${spacing[4]};
   font-size: ${typography.small.size};
+  flex-wrap: wrap;
 
   a {
     color: ${colors.muted};

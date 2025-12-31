@@ -219,8 +219,10 @@ export default function ExperienceSection() {
                   <h3 className={schoolStyles}>{edu.school}</h3>
                   <span className={periodStyles}>{edu.period}</span>
                 </div>
-                <p className={degreeStyles}>{edu.degree}</p>
-                {edu.description && (
+                {'degree' in edu && edu.degree && (
+                  <p className={degreeStyles}>{edu.degree}</p>
+                )}
+                {'description' in edu && edu.description && (
                   <p className={descriptionStyles}>{edu.description}</p>
                 )}
               </article>
