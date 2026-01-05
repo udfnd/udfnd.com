@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "translate": "tsx scripts/translate.ts"
   },
   "dependencies": {
     "@emotion/css": "^11.13.5",
@@ -20,15 +21,20 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "deepl-node": "^1.24.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "openai": "^6.15.0",
     "prettier": "^3.7.4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
