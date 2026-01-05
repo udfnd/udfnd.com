@@ -1,9 +1,11 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { css } from '@emotion/css';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { colors, typography, layout, spacing, radius, gradientText } from '@/styles/tokens';
+import { colors, typography, layout, spacing, radius, gradientText, transition } from '@/styles/tokens';
+import type { Post } from '@/types/post';
 
 const mainStyles = css`
   min-height: 100vh;
@@ -20,6 +22,12 @@ const backLinkStyles = css`
   font-size: ${typography.small.size};
   color: ${colors.faint};
   margin-bottom: ${spacing[8]};
+  text-decoration: none;
+  transition: color ${transition.fast};
+
+  &:hover {
+    color: ${colors.text};
+  }
 `;
 
 const headerStyles = css`
@@ -141,71 +149,102 @@ const contentStyles = css`
       font-style: italic;
     }
   }
+
+  a {
+    color: ${colors.accent.solid};
+    text-decoration: underline;
+  }
 `;
 
-interface PostData {
-  title: string;
-  date: string;
-  category: string;
-  tags: string[];
-  content: string;
-}
+const actionsStyles = css`
+  display: flex;
+  gap: ${spacing[3]};
+  margin-top: ${spacing[10]};
+  padding-top: ${spacing[6]};
+  border-top: 1px solid ${colors.border};
+`;
 
-const samplePostData: Record<string, PostData> = {
-  'design-system-principles': {
-    title: '디자인 시스템을 구축할 때 고려해야 할 것들',
-    date: '2024-03-15',
-    category: 'Design',
-    tags: ['디자인시스템', 'UI/UX', 'Figma'],
-    content: `
-      <p>디자인 시스템은 단순한 컴포넌트 라이브러리가 아닙니다.
-      제품 전체의 일관성을 보장하고, 팀의 효율성을 높이며,
-      사용자에게 일관된 경험을 제공하는 핵심 인프라입니다.</p>
+const editButtonStyles = css`
+  display: inline-flex;
+  align-items: center;
+  gap: ${spacing[2]};
+  padding: ${spacing[2]} ${spacing[4]};
+  font-size: ${typography.small.size};
+  color: ${colors.muted};
+  background: transparent;
+  border: 1px solid ${colors.border};
+  border-radius: ${radius.md};
+  text-decoration: none;
+  cursor: pointer;
+  transition: all ${transition.fast};
 
-      <h2>왜 디자인 시스템인가?</h2>
-      <p>여러 프로젝트를 진행하면서 반복되는 문제들이 있었습니다.
-      같은 버튼인데 페이지마다 스타일이 달랐고, 색상 값이 하드코딩되어 있어서
-      테마 변경이 어려웠습니다.</p>
+  &:hover {
+    border-color: ${colors.faint};
+    color: ${colors.text};
+  }
+`;
 
-      <h2>핵심 원칙들</h2>
+const loadingStyles = css`
+  text-align: center;
+  padding: ${spacing[12]} 0;
+  color: ${colors.muted};
+`;
 
-      <h3>1. 토큰 기반 설계</h3>
-      <p>모든 시각적 요소를 추상화된 토큰으로 정의합니다.
-      색상, 타이포그래피, 스페이싱 등을 변수로 관리하면
-      일관성을 유지하면서도 유연하게 변경할 수 있습니다.</p>
-
-      <h3>2. 컴포지션 우선</h3>
-      <p>작은 단위의 컴포넌트를 조합해서 복잡한 UI를 구성합니다.
-      이렇게 하면 재사용성이 높아지고, 유지보수가 쉬워집니다.</p>
-
-      <h3>3. 접근성 내장</h3>
-      <p>접근성은 나중에 추가하는 것이 아니라, 처음부터 시스템에 녹아있어야 합니다.
-      모든 컴포넌트가 기본적으로 접근 가능해야 합니다.</p>
-
-      <blockquote>
-        <p>좋은 디자인 시스템은 제약을 주면서도 창의성을 해치지 않는다.</p>
-      </blockquote>
-
-      <h2>마치며</h2>
-      <p>디자인 시스템 구축은 긴 여정입니다. 완벽함을 추구하기보다는,
-      팀의 실제 요구에 맞춰 점진적으로 발전시켜 나가는 것이 중요합니다.</p>
-    `,
-  },
-};
-
-const defaultPost: PostData = {
-  title: 'Post Not Found',
-  date: new Date().toISOString().split('T')[0] ?? '',
-  category: 'Unknown',
-  tags: [],
-  content: '<p>요청하신 글을 찾을 수 없습니다.</p>',
-};
+const errorStyles = css`
+  text-align: center;
+  padding: ${spacing[12]} 0;
+  color: #ef4444;
+`;
 
 export default function BlogPostPage() {
   const params = useParams();
   const slug = params.slug as string;
 
-  const post: PostData = samplePostData[slug] ?? defaultPost;
+  const [post, setPost] = useState<Post | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(`/api/posts/${slug}?incrementView=true`);
+        if (!response.ok) {
+          throw new Error('Post not found');
+        }
+        const { post } = await response.json();
+        setPost(post);
+      } catch {
+        setError('글을 찾을 수 없습니다.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [slug]);
+
+  if (isLoading) {
+    return (
+      <main className={mainStyles}>
+        <div className={containerStyles}>
+          <p className={loadingStyles}>불러오는 중...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error || !post) {
+    return (
+      <main className={mainStyles}>
+        <div className={containerStyles}>
+          <Link href="/blog" className={backLinkStyles}>
+            &larr; Back to Blog
+          </Link>
+          <p className={errorStyles}>{error || '글을 찾을 수 없습니다.'}</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className={mainStyles}>
@@ -218,13 +257,15 @@ export default function BlogPostPage() {
           <div className={metaStyles}>
             <span className={categoryStyles}>{post.category}</span>
             <span className={dateStyles}>&middot;</span>
-            <time className={dateStyles} dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString('ko-KR', {
+            <time className={dateStyles} dateTime={post.created_at}>
+              {new Date(post.created_at).toLocaleDateString('ko-KR', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
             </time>
+            <span className={dateStyles}>&middot;</span>
+            <span className={dateStyles}>조회 {post.view_count}</span>
           </div>
           <h1 className={titleStyles}>{post.title}</h1>
           <div className={tagsStyles}>
@@ -240,6 +281,12 @@ export default function BlogPostPage() {
           className={contentStyles}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
+        <div className={actionsStyles}>
+          <Link href={`/blog/edit/${post.id}`} className={editButtonStyles}>
+            수정
+          </Link>
+        </div>
       </article>
     </main>
   );

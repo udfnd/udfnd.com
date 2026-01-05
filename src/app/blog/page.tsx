@@ -1,9 +1,11 @@
 'use client';
 
 import { css } from '@emotion/css';
-import { useState } from 'react';
-import { BlogPostCard, BlogPost } from '@/components/blog';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { BlogPostCard } from '@/components/blog';
 import { colors, typography, layout, spacing, transition, radius } from '@/styles/tokens';
+import type { PostListItem, PostCategory } from '@/types/post';
 
 const mainStyles = css`
   min-height: 100vh;
@@ -16,8 +18,18 @@ const containerStyles = css`
 `;
 
 const headerStyles = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: ${spacing[10]};
+  gap: ${spacing[4]};
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
+
+const headerLeftStyles = css``;
 
 const titleStyles = css`
   font-size: ${typography.h1.size};
@@ -32,6 +44,26 @@ const descriptionStyles = css`
   line-height: ${typography.body.lineHeight};
   color: ${colors.muted};
   max-width: ${layout.proseWidth};
+`;
+
+const writeButtonStyles = css`
+  display: inline-flex;
+  align-items: center;
+  gap: ${spacing[2]};
+  padding: ${spacing[2]} ${spacing[4]};
+  font-size: ${typography.small.size};
+  font-weight: 600;
+  color: ${colors.bg};
+  background: ${colors.accent.gradient};
+  border: none;
+  border-radius: ${radius.md};
+  text-decoration: none;
+  cursor: pointer;
+  transition: all ${transition.fast};
+
+  &:hover {
+    background: ${colors.accent.gradientHover};
+  }
 `;
 
 const filtersStyles = css`
@@ -85,60 +117,62 @@ const emptyStateStyles = css`
   color: ${colors.faint};
 `;
 
-const samplePosts: BlogPost[] = [
-  {
-    slug: 'design-system-principles',
-    title: '디자인 시스템을 구축할 때 고려해야 할 것들',
-    excerpt:
-      '효과적인 디자인 시스템은 일관성 있는 사용자 경험을 제공하고 개발 효율성을 높입니다.',
-    date: '2024-03-15',
-    category: 'Design',
-    tags: ['디자인시스템', 'UI/UX'],
-  },
-  {
-    slug: 'nextjs-app-router',
-    title: 'Next.js App Router로 마이그레이션하기',
-    excerpt: 'Pages Router에서 App Router로 전환하면서 겪은 경험과 새로운 패턴들.',
-    date: '2024-03-08',
-    category: 'Frontend',
-    tags: ['Next.js', 'React'],
-  },
-  {
-    slug: 'css-animation-performance',
-    title: 'CSS 애니메이션 성능 최적화',
-    excerpt: '부드러운 60fps 애니메이션을 구현하기 위한 CSS 최적화 기법.',
-    date: '2024-02-28',
-    category: 'Frontend',
-    tags: ['CSS', 'Performance'],
-  },
-  {
-    slug: 'accessibility-basics',
-    title: '웹 접근성, 어디서부터 시작해야 할까?',
-    excerpt: '모든 사용자를 위한 웹을 만들기 위해 알아야 할 접근성 기초.',
-    date: '2024-02-15',
-    category: 'Frontend',
-    tags: ['접근성', 'A11y'],
-  },
-];
+const loadingStyles = css`
+  text-align: center;
+  padding: ${spacing[12]} 0;
+  color: ${colors.muted};
+`;
 
-const categories = ['All', 'Frontend', 'Design'];
+const categories = ['All', 'Tech', 'Life', 'Rambling'];
+
+// PostListItem을 BlogPost 형식으로 변환
+function toBlogPost(post: PostListItem) {
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt || '',
+    date: post.created_at,
+    category: post.category,
+    tags: post.tags,
+  };
+}
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [posts, setPosts] = useState<PostListItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredPosts =
-    activeCategory === 'All'
-      ? samplePosts
-      : samplePosts.filter((post) => post.category === activeCategory);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
+        const categoryParam =
+          activeCategory !== 'All' ? `?category=${activeCategory}` : '';
+        const response = await fetch(`/api/posts${categoryParam}`);
+        if (response.ok) {
+          const { posts } = await response.json();
+          setPosts(posts || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [activeCategory]);
 
   return (
     <main className={mainStyles}>
       <div className={containerStyles}>
         <header className={headerStyles}>
-          <h1 className={titleStyles}>Writing</h1>
-          <p className={descriptionStyles}>
-            프론트엔드 개발과 디자인에 대한 생각들을 기록합니다.
-          </p>
+          <div className={headerLeftStyles}>
+            <h1 className={titleStyles}>Blog</h1>
+          </div>
+          <Link href="/blog/write" className={writeButtonStyles}>
+            + 새 글 작성
+          </Link>
         </header>
 
         <div className={filtersStyles} role="group" aria-label="Filter by category">
@@ -146,7 +180,7 @@ export default function BlogPage() {
             <button
               key={category}
               className={`${filterButtonStyles} ${activeCategory === category ? filterButtonActiveStyles : ''}`}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => setActiveCategory(category as PostCategory | 'All')}
               aria-pressed={activeCategory === category}
             >
               {category}
@@ -154,14 +188,20 @@ export default function BlogPage() {
           ))}
         </div>
 
-        {filteredPosts.length > 0 ? (
+        {isLoading ? (
+          <p className={loadingStyles}>불러오는 중...</p>
+        ) : posts.length > 0 ? (
           <div className={postsGridStyles}>
-            {filteredPosts.map((post) => (
-              <BlogPostCard key={post.slug} post={post} />
+            {posts.map((post) => (
+              <BlogPostCard key={post.slug} post={toBlogPost(post)} />
             ))}
           </div>
         ) : (
-          <p className={emptyStateStyles}>해당 카테고리의 글이 없습니다.</p>
+          <p className={emptyStateStyles}>
+            {activeCategory === 'All'
+              ? '아직 작성된 글이 없습니다.'
+              : '해당 카테고리의 글이 없습니다.'}
+          </p>
         )}
       </div>
     </main>
