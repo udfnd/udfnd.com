@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import './globals.css';
 import { Navigation, Footer } from '@/components/layout';
+import GiphyMascot from '@/components/ui/GiphyMascot';
 
 export const metadata: Metadata = {
   title: {
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Navigation />
         {children}
         <Footer />
+        <GiphyMascot />
       </body>
     </html>
   );
