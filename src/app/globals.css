@@ -1,5 +1,9 @@
-/* Pretendard (Korean) */
+/* === FONTS === */
+/* Pretendard (Korean - body text) */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+/* Syne (Display font - bold, geometric, distinctive) */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
 /* Noto Sans SC (Simplified Chinese) */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
@@ -7,32 +11,48 @@
 /* Noto Sans JP (Japanese) */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
 
+/* JetBrains Mono (Code) */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 /* Press Start 2P (8-bit pixel font) */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* CSS Variables - Palette B (Charcoal + Paper) */
+/* === CSS Variables - Golden Noir Theme === */
 :root {
-  --bg: #111111;
-  --surface: #171717;
-  --surface-2: #1E1E1E;
+  /* Backgrounds */
+  --bg: #0a0a0a;
+  --surface: #121212;
+  --surface-2: #1a1a1a;
+  --surface-glow: rgba(244, 208, 0, 0.03);
 
-  --text: #F2F2F2;
-  --muted: #B9B9B9;
-  --faint: #8A8A8A;
+  /* Text */
+  --text: #fafafa;
+  --muted: #a3a3a3;
+  --faint: #737373;
 
-  --border: #2A2A2A;
+  /* Borders */
+  --border: #262626;
+  --border-glow: rgba(244, 208, 0, 0.15);
 
-  /* Accent gradient */
-  --accent-from: #F4D000;
-  --accent-to: #FF6B35;
-  --accent-gradient: linear-gradient(135deg, #F4D000 0%, #FF6B35 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #FFE066 0%, #FF8855 100%);
+  /* Accent - Forsythia Yellow */
+  --accent-primary: #F4D000;
+  --accent-primary-glow: rgba(244, 208, 0, 0.4);
+  --accent-secondary: #D4A000;
+  --accent-secondary-glow: rgba(212, 160, 0, 0.3);
+  --accent-gradient: linear-gradient(135deg, #F4D000 0%, #E8B800 50%, #D4A000 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #FFE566 0%, #F4D000 50%, #E8B800 100%);
 
-  --font-sans: 'Pretendard Variable', Pretendard, 'Noto Sans JP', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  /* Special */
+  --highlight: #E8B800;
+  --cyan: #F4D000;
+
+  /* Fonts */
+  --font-display: 'Syne', 'Pretendard Variable', sans-serif;
+  --font-sans: 'Pretendard Variable', Pretendard, 'Noto Sans JP', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 }
 
-/* Reset */
+/* === RESET === */
 *,
 *::before,
 *::after {
@@ -46,45 +66,56 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
   font-size: 1rem;
-  font-weight: 450;
-  line-height: 1.65;
+  font-weight: 400;
+  line-height: 1.7;
   color: var(--text);
   background-color: var(--bg);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Selection with gradient-inspired color */
+/* Noise texture overlay on body */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Selection - Electric lime */
 ::selection {
-  background-color: var(--accent-from);
+  background-color: var(--accent-primary);
   color: var(--bg);
 }
 
-/* Focus - gradient-inspired ring */
+/* Focus - Electric glow ring */
 :focus-visible {
-  outline: 2px solid var(--accent-from);
-  outline-offset: 2px;
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-/* Links - gradient text on hover */
+/* Links - Clean hover with accent */
 a {
   color: inherit;
   text-decoration: underline;
-  text-decoration-color: var(--faint);
-  text-underline-offset: 3px;
-  transition: all 200ms ease;
+  text-decoration-color: var(--border);
+  text-underline-offset: 4px;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 a:hover {
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-decoration-color: var(--accent-from);
+  color: var(--accent-primary);
+  text-decoration-color: var(--accent-primary);
 }
 
 /* Images */

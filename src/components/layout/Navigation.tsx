@@ -19,8 +19,11 @@ const navStyles = css`
   align-items: center;
   justify-content: center;
   padding: 0 ${layout.containerPadding};
-  background: ${colors.bg};
+  background: rgba(8, 8, 12, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid ${colors.border};
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
 const navContainerStyles = css`
@@ -32,13 +35,17 @@ const navContainerStyles = css`
 `;
 
 const logoStyles = css`
-  font-size: ${typography.h3.size};
-  font-weight: ${typography.h3.weight};
+  font-family: ${typography.fontFamily.display};
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: ${colors.text};
   text-decoration: none;
+  transition: all 200ms ease;
 
   &:hover {
-    color: ${colors.text};
+    color: ${colors.accent.primary};
+    text-shadow: 0 0 20px ${colors.accent.primaryGlow};
   }
 `;
 
@@ -53,15 +60,37 @@ const menuItemStyles = css`
   font-weight: 500;
   color: ${colors.muted};
   text-decoration: none;
-  transition: all ${transition.normal};
+  position: relative;
+  padding: ${spacing[2]} 0;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: ${colors.accent.primary};
+    transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
   &:hover {
-    ${gradientText}
+    color: ${colors.text};
+    
+    &::after {
+      width: 100%;
+    }
   }
 `;
 
 const activeMenuItemStyles = css`
-  ${gradientText}
+  color: ${colors.accent.primary};
+  
+  &::after {
+    width: 100%;
+    background: ${colors.accent.primary};
+  }
 `;
 
 const languageDropdownContainerStyles = css`
@@ -72,19 +101,20 @@ const languageButtonStyles = css`
   font-size: ${typography.small.size};
   font-weight: 500;
   color: ${colors.muted};
-  background: ${colors.surface};
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid ${colors.border};
-  border-radius: ${radius.sm};
-  padding: ${spacing[1]} ${spacing[3]};
+  border-radius: ${radius.md};
+  padding: ${spacing[2]} ${spacing[3]};
   cursor: pointer;
-  transition: all ${transition.normal};
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: ${spacing[2]};
 
   &:hover {
-    border-color: ${colors.accent.solid};
+    border-color: ${colors.accent.primary};
     color: ${colors.text};
+    background: rgba(244, 208, 0, 0.05);
   }
 `;
 
@@ -92,13 +122,27 @@ const dropdownMenuStyles = css`
   position: absolute;
   top: calc(100% + ${spacing[2]});
   right: 0;
-  background: ${colors.surface};
+  background: rgba(15, 15, 20, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid ${colors.border};
-  border-radius: ${radius.md};
+  border-radius: ${radius.lg};
   padding: ${spacing[2]};
   min-width: 140px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   z-index: 200;
+  animation: dropdownFade 150ms ease-out;
+
+  @keyframes dropdownFade {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const dropdownItemStyles = css`
@@ -114,18 +158,18 @@ const dropdownItemStyles = css`
   border: none;
   border-radius: ${radius.sm};
   cursor: pointer;
-  transition: all ${transition.normal};
+  transition: all 150ms ease;
   text-align: left;
 
   &:hover {
-    background: ${colors.border};
+    background: rgba(244, 208, 0, 0.1);
     color: ${colors.text};
   }
 `;
 
 const dropdownItemActiveStyles = css`
-  background: ${colors.border};
-  color: ${colors.text};
+  background: rgba(244, 208, 0, 0.15);
+  color: ${colors.accent.primary};
 `;
 
 const flagStyles = css`

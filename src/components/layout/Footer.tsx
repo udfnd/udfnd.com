@@ -1,11 +1,24 @@
 'use client';
 
 import { css } from '@emotion/css';
-import { colors, typography, layout, spacing, transition } from '@/styles/tokens';
+import { colors, typography, layout, spacing, radius } from '@/styles/tokens';
 
 const footerStyles = css`
   padding: ${spacing[12]} ${layout.containerPadding};
   border-top: 1px solid ${colors.border};
+  background: ${colors.surface};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: ${colors.accent.gradient};
+  }
 `;
 
 const footerContainerStyles = css`
@@ -14,33 +27,54 @@ const footerContainerStyles = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: ${spacing[4]};
+  gap: ${spacing[6]};
   text-align: center;
+`;
+
+const brandStyles = css`
+  font-family: ${typography.fontFamily.display};
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: ${colors.text};
+  letter-spacing: -0.02em;
 `;
 
 const socialLinksStyles = css`
   display: flex;
-  gap: ${spacing[4]};
+  gap: ${spacing[3]};
 `;
 
 const socialLinkStyles = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   color: ${colors.faint};
   text-decoration: none;
-  transition: all ${transition.normal};
+  background: ${colors.bg};
+  border: 1px solid ${colors.border};
+  border-radius: ${radius.md};
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    color: ${colors.accent.from};
+    color: ${colors.accent.primary};
+    border-color: ${colors.accent.primary};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px ${colors.accent.primaryGlow};
   }
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 `;
 
 const copyrightStyles = css`
+  font-family: ${typography.fontFamily.mono};
   font-size: ${typography.caption.size};
   color: ${colors.faint};
+  letter-spacing: 0.02em;
 `;
 
 export default function Footer() {
@@ -49,6 +83,7 @@ export default function Footer() {
   return (
     <footer className={footerStyles}>
       <div className={footerContainerStyles}>
+        <span className={brandStyles}>udfnd</span>
         <div className={socialLinksStyles}>
           <a
             href="https://github.com"

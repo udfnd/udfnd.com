@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import './globals.css';
 import { Navigation, Footer } from '@/components/layout';
 import GiphyMascot from '@/components/ui/GiphyMascot';
+import AnimatedBackground from '@/components/ui/AnimatedBackground';
 
 export const metadata: Metadata = {
   title: {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
+        <AnimatedBackground />
         <Navigation />
         {children}
         <Footer />
