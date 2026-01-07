@@ -33,8 +33,9 @@ const selectStyles = css`
 
 const CATEGORIES: { value: PostCategory; label: string }[] = [
   { value: 'Tech', label: 'Tech' },
+  { value: 'Music', label: 'Music' },
   { value: 'Life', label: 'Life' },
-  { value: 'Rambling', label: 'Rambling' },
+  { value: 'Etc', label: 'Etc' },
 ];
 
 interface CategorySelectProps {

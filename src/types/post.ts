@@ -1,4 +1,4 @@
-export type PostCategory = 'Tech' | 'Life' | 'Rambling';
+export type PostCategory = 'Tech' | 'Music' | 'Life' | 'Etc';
 
 export interface Post {
   id: string;
@@ -6,6 +6,7 @@ export interface Post {
   title: string;
   content: string;
   excerpt: string | null;
+  thumbnail_url: string | null;
   category: PostCategory;
   tags: string[];
   is_published: boolean;
@@ -37,8 +38,10 @@ export interface PostListItem {
   slug: string;
   title: string;
   excerpt: string | null;
+  thumbnail_url: string | null;
   category: PostCategory;
   tags: string[];
+  is_published: boolean;
   created_at: string;
   view_count: number;
 }

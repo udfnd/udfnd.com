@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/server';
 import { generateExcerpt } from '@/lib/utils/slug';
+import { extractThumbnailFromContent } from '@/lib/utils/extractThumbnail';
 import type { PostUpdateInput, Post } from '@/types/post';
 
 interface RouteParams {
@@ -78,6 +79,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       if (!body.excerpt) {
         updateData.excerpt = generateExcerpt(body.content);
       }
+      // 썸네일 재추출
+      updateData.thumbnail_url = extractThumbnailFromContent(body.content);
     }
     if (body.excerpt !== undefined) updateData.excerpt = body.excerpt;
     if (body.category !== undefined) updateData.category = body.category;

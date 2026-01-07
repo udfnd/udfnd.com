@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/server';
 import { generateSlug, generateExcerpt } from '@/lib/utils/slug';
+import { extractThumbnailFromContent } from '@/lib/utils/extractThumbnail';
 import type { PostCreateInput, Post, PostListItem } from '@/types/post';
 
 // GET /api/posts - 글 목록 조회
@@ -12,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     let query = supabaseAdmin
       .from('posts')
-      .select('id, slug, title, excerpt, category, tags, created_at, view_count')
+      .select('id, slug, title, excerpt, thumbnail_url, category, tags, is_published, created_at, view_count')
       .order('created_at', { ascending: false });
 
     // 기본적으로 발행된 글만 조회
@@ -73,11 +74,15 @@ export async function POST(request: NextRequest) {
     // 요약 생성 (제공되지 않은 경우)
     const excerpt = body.excerpt || generateExcerpt(body.content);
 
+    // 썸네일 추출 (첫 번째 이미지)
+    const thumbnailUrl = extractThumbnailFromContent(body.content);
+
     const postData = {
       slug,
       title: body.title,
       content: body.content,
       excerpt,
+      thumbnail_url: thumbnailUrl,
       category: body.category,
       tags: body.tags || [],
       is_published: body.is_published ?? false,

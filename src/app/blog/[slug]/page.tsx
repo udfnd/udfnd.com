@@ -154,6 +154,29 @@ const contentStyles = css`
     color: ${colors.accent.solid};
     text-decoration: underline;
   }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: ${radius.md};
+    margin: ${spacing[6]} 0;
+    display: block;
+  }
+
+  figure {
+    margin: ${spacing[6]} 0;
+
+    img {
+      margin: 0;
+    }
+
+    figcaption {
+      font-size: ${typography.small.size};
+      color: ${colors.faint};
+      text-align: center;
+      margin-top: ${spacing[2]};
+    }
+  }
 `;
 
 const actionsStyles = css`

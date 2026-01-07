@@ -123,17 +123,50 @@ const loadingStyles = css`
   color: ${colors.muted};
 `;
 
-const categories = ['All', 'Tech', 'Life', 'Rambling'];
+const filterDividerStyles = css`
+  width: 1px;
+  height: 24px;
+  background: ${colors.border};
+  margin: 0 ${spacing[2]};
+`;
+
+const draftFilterStyles = css`
+  font-size: ${typography.small.size};
+  padding: ${spacing[2]} ${spacing[3]};
+  border-radius: ${radius.sm};
+  background: transparent;
+  color: ${colors.muted};
+  border: 1px dashed ${colors.border};
+  transition: all ${transition.fast};
+  cursor: pointer;
+
+  &:hover {
+    border-color: ${colors.faint};
+    color: ${colors.text};
+  }
+`;
+
+const draftFilterActiveStyles = css`
+  background: ${colors.surface2};
+  color: ${colors.text};
+  border-color: ${colors.accent.solid};
+  border-style: solid;
+`;
+
+const categories = ['All', 'Tech', 'Music', 'Life', 'Etc'];
 
 // PostListItem을 BlogPost 형식으로 변환
 function toBlogPost(post: PostListItem) {
   return {
+    id: post.id,
     slug: post.slug,
     title: post.title,
     excerpt: post.excerpt || '',
     date: post.created_at,
     category: post.category,
     tags: post.tags,
+    thumbnail_url: post.thumbnail_url,
+    is_published: post.is_published,
   };
 }
 
@@ -141,17 +174,36 @@ export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [posts, setPosts] = useState<PostListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showDrafts, setShowDrafts] = useState(false);
+
+  // 관리자 여부 확인
+  useEffect(() => {
+    const password = sessionStorage.getItem('blog_admin_password');
+    setIsAdmin(!!password);
+  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoading(true);
       try {
-        const categoryParam =
-          activeCategory !== 'All' ? `?category=${activeCategory}` : '';
-        const response = await fetch(`/api/posts${categoryParam}`);
+        const params = new URLSearchParams();
+        if (activeCategory !== 'All') {
+          params.set('category', activeCategory);
+        }
+        if (showDrafts && isAdmin) {
+          params.set('includeUnpublished', 'true');
+        }
+        const queryString = params.toString();
+        const response = await fetch(`/api/posts${queryString ? `?${queryString}` : ''}`);
         if (response.ok) {
           const { posts } = await response.json();
-          setPosts(posts || []);
+          // 임시저장 모드일 때는 비공개 글만 필터링
+          if (showDrafts && isAdmin) {
+            setPosts((posts || []).filter((p: PostListItem) => !p.is_published));
+          } else {
+            setPosts(posts || []);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch posts:', error);
@@ -161,7 +213,7 @@ export default function BlogPage() {
     };
 
     fetchPosts();
-  }, [activeCategory]);
+  }, [activeCategory, showDrafts, isAdmin]);
 
   return (
     <main className={mainStyles}>
@@ -179,13 +231,28 @@ export default function BlogPage() {
           {categories.map((category) => (
             <button
               key={category}
-              className={`${filterButtonStyles} ${activeCategory === category ? filterButtonActiveStyles : ''}`}
-              onClick={() => setActiveCategory(category as PostCategory | 'All')}
-              aria-pressed={activeCategory === category}
+              className={`${filterButtonStyles} ${activeCategory === category && !showDrafts ? filterButtonActiveStyles : ''}`}
+              onClick={() => {
+                setActiveCategory(category as PostCategory | 'All');
+                setShowDrafts(false);
+              }}
+              aria-pressed={activeCategory === category && !showDrafts}
             >
               {category}
             </button>
           ))}
+          {isAdmin && (
+            <>
+              <div className={filterDividerStyles} />
+              <button
+                className={`${draftFilterStyles} ${showDrafts ? draftFilterActiveStyles : ''}`}
+                onClick={() => setShowDrafts(!showDrafts)}
+                aria-pressed={showDrafts}
+              >
+                임시저장
+              </button>
+            </>
+          )}
         </div>
 
         {isLoading ? (
@@ -198,9 +265,11 @@ export default function BlogPage() {
           </div>
         ) : (
           <p className={emptyStateStyles}>
-            {activeCategory === 'All'
-              ? '아직 작성된 글이 없습니다.'
-              : '해당 카테고리의 글이 없습니다.'}
+            {showDrafts
+              ? '임시저장된 글이 없습니다.'
+              : activeCategory === 'All'
+                ? '아직 작성된 글이 없습니다.'
+                : '해당 카테고리의 글이 없습니다.'}
           </p>
         )}
       </div>

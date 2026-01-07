@@ -1,12 +1,17 @@
 'use client';
 
+import { useState, useRef, useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
+import { ResizableImageExtension } from './extensions/ResizableImageExtension';
 import { css } from '@emotion/css';
 import { colors, typography, spacing, radius, transition } from '@/styles/tokens';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 const editorWrapperStyles = css`
   border: 1px solid ${colors.border};
@@ -137,6 +142,14 @@ const editorContentStyles = css`
       text-decoration: underline;
     }
 
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: ${radius.md};
+      margin: ${spacing[4]} 0;
+      display: block;
+    }
+
     p.is-editor-empty:first-child::before {
       content: attr(data-placeholder);
       color: ${colors.faint};
@@ -145,6 +158,37 @@ const editorContentStyles = css`
       pointer-events: none;
     }
   }
+`;
+
+const uploadErrorStyles = css`
+  padding: ${spacing[2]} ${spacing[3]};
+  margin: ${spacing[2]} ${spacing[3]};
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  border-radius: ${radius.sm};
+  font-size: ${typography.small.size};
+  color: #ef4444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 0;
+    font-size: ${typography.small.size};
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const uploadingButtonStyles = css`
+  opacity: 0.5;
+  cursor: not-allowed !important;
 `;
 
 interface TiptapEditorProps {
@@ -158,6 +202,61 @@ export default function TiptapEditor({
   onChange,
   placeholder = '내용을 입력하세요...',
 }: TiptapEditorProps) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = useCallback(async (file: File): Promise<string | null> => {
+    // Client-side validation
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setUploadError('지원하지 않는 파일 형식입니다. (JPEG, PNG, GIF, WebP만 가능)');
+      return null;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setUploadError('파일 크기가 너무 큽니다. (최대 10MB)');
+      return null;
+    }
+
+    const password = sessionStorage.getItem('blog_admin_password') || '';
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'x-admin-password': password },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || '업로드에 실패했습니다.');
+      }
+
+      const { url } = await response.json();
+      return url;
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : '업로드에 실패했습니다.');
+      return null;
+    }
+  }, []);
+
+  const handleFileUpload = useCallback(async (file: File, editorInstance: typeof editor) => {
+    if (!editorInstance) return;
+
+    setIsUploading(true);
+    setUploadError(null);
+
+    try {
+      const url = await uploadImage(file);
+      if (url) {
+        editorInstance.chain().focus().setImage({ src: url }).run();
+      }
+    } finally {
+      setIsUploading(false);
+    }
+  }, [uploadImage]);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -176,6 +275,13 @@ export default function TiptapEditor({
         placeholder,
       }),
       Underline,
+      ResizableImageExtension.configure({
+        inline: false,
+        allowBase64: false,
+        HTMLAttributes: {
+          loading: 'lazy',
+        },
+      }),
     ],
     content,
     immediatelyRender: false, // SSR hydration mismatch 방지
@@ -185,6 +291,38 @@ export default function TiptapEditor({
     editorProps: {
       attributes: {
         class: 'tiptap-editor',
+      },
+      handleDrop: (view, event, _slice, moved) => {
+        if (moved) return false;
+
+        const files = event.dataTransfer?.files;
+        const firstFile = files?.[0];
+        if (firstFile && firstFile.type.startsWith('image/')) {
+          event.preventDefault();
+          // Get editor instance from view
+          const editorInstance = view.dom.closest('.tiptap-editor-wrapper');
+          if (editorInstance) {
+            handleFileUpload(firstFile, editor);
+          }
+          return true;
+        }
+        return false;
+      },
+      handlePaste: (view, event, _slice) => {
+        const items = event.clipboardData?.items;
+        if (!items) return false;
+
+        for (const item of Array.from(items)) {
+          if (item.type.startsWith('image/')) {
+            event.preventDefault();
+            const file = item.getAsFile();
+            if (file) {
+              handleFileUpload(file, editor);
+            }
+            return true;
+          }
+        }
+        return false;
       },
     },
   });
@@ -207,6 +345,18 @@ export default function TiptapEditor({
     }
 
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+  };
+
+  const handleImageButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editor) return;
+
+    await handleFileUpload(file, editor);
+    e.target.value = ''; // Reset input
   };
 
   return (
@@ -320,7 +470,34 @@ export default function TiptapEditor({
         >
           Link
         </button>
+
+        <div className={dividerStyles} />
+
+        <button
+          type="button"
+          onClick={handleImageButtonClick}
+          className={`${toolbarButtonStyles} ${isUploading ? uploadingButtonStyles : ''}`}
+          title="Insert Image"
+          disabled={isUploading}
+        >
+          {isUploading ? '...' : 'IMG'}
+        </button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          onChange={handleFileSelect}
+          style={{ display: 'none' }}
+        />
       </div>
+
+      {uploadError && (
+        <div className={uploadErrorStyles}>
+          <span>{uploadError}</span>
+          <button type="button" onClick={() => setUploadError(null)}>닫기</button>
+        </div>
+      )}
 
       <div className={editorContentStyles}>
         <EditorContent editor={editor} />
