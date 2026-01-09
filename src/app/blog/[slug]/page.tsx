@@ -75,7 +75,7 @@ const contentStyles = css`
     font-weight: ${typography.h2.weight};
     line-height: ${typography.h2.lineHeight};
     color: ${colors.text};
-    margin: ${spacing[10]} 0 ${spacing[4]};
+    margin: ${spacing[12]} 0 ${spacing[5]};
   }
 
   h3 {
@@ -83,28 +83,29 @@ const contentStyles = css`
     font-weight: ${typography.h3.weight};
     line-height: ${typography.h3.lineHeight};
     color: ${colors.text};
-    margin: ${spacing[8]} 0 ${spacing[3]};
+    margin: ${spacing[10]} 0 ${spacing[4]};
   }
 
   p {
-    font-size: ${typography.body.size};
-    line-height: ${typography.body.lineHeight};
-    color: ${colors.muted};
-    margin-bottom: ${spacing[5]};
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: #d4d4d4;
+    margin-bottom: ${spacing[6]};
     max-width: ${layout.proseWidth};
+    min-height: 1.5em;
   }
 
   ul,
   ol {
-    margin-bottom: ${spacing[5]};
+    margin-bottom: ${spacing[6]};
     padding-left: ${spacing[5]};
   }
 
   li {
-    font-size: ${typography.body.size};
-    line-height: ${typography.body.lineHeight};
-    color: ${colors.muted};
-    margin-bottom: ${spacing[2]};
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: #d4d4d4;
+    margin-bottom: ${spacing[3]};
   }
 
   ul li {
@@ -128,9 +129,11 @@ const contentStyles = css`
     background: ${colors.surface};
     border: 1px solid ${colors.border};
     border-radius: ${radius.md};
-    padding: ${spacing[4]};
-    margin-bottom: ${spacing[5]};
+    padding: ${spacing[5]};
+    margin-bottom: ${spacing[6]};
     overflow-x: auto;
+    font-size: 0.9375rem;
+    line-height: 1.65;
 
     code {
       background: none;
@@ -139,14 +142,18 @@ const contentStyles = css`
   }
 
   blockquote {
-    border-left: 2px solid;
+    border-left: 3px solid;
     border-image: ${colors.accent.gradient} 1;
-    padding-left: ${spacing[4]};
-    margin: ${spacing[6]} 0;
+    padding: ${spacing[4]} ${spacing[5]};
+    margin: ${spacing[8]} 0;
+    background: ${colors.surface};
+    border-radius: 0 ${radius.md} ${radius.md} 0;
 
     p {
-      color: ${colors.faint};
+      color: ${colors.muted};
       font-style: italic;
+      font-size: 1.0625rem;
+      margin-bottom: 0;
     }
   }
 
@@ -159,12 +166,12 @@ const contentStyles = css`
     max-width: 100%;
     height: auto;
     border-radius: ${radius.md};
-    margin: ${spacing[6]} 0;
+    margin: ${spacing[8]} 0;
     display: block;
   }
 
   figure {
-    margin: ${spacing[6]} 0;
+    margin: ${spacing[8]} 0;
 
     img {
       margin: 0;
@@ -174,7 +181,7 @@ const contentStyles = css`
       font-size: ${typography.small.size};
       color: ${colors.faint};
       text-align: center;
-      margin-top: ${spacing[2]};
+      margin-top: ${spacing[3]};
     }
   }
 `;

@@ -36,8 +36,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // 조회수 증가 (옵션)
-    if (incrementView) {
+    // 조회수 증가 (production 환경에서만)
+    if (incrementView && process.env.NODE_ENV === 'production') {
       await supabaseAdmin
         .from('posts')
         .update({ view_count: (data.view_count || 0) + 1 })

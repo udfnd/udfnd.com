@@ -1,7 +1,6 @@
 'use client';
 
 import { css } from '@emotion/css';
-import Image from 'next/image';
 import { colors, typography, layout, spacing, radius } from '@/styles/tokens';
 
 const footerStyles = css`
@@ -78,18 +77,6 @@ const copyrightStyles = css`
   letter-spacing: 0.02em;
 `;
 
-const giphyAttributionStyles = css`
-  display: flex;
-  align-items: center;
-  gap: ${spacing[2]};
-  opacity: 0.6;
-  transition: opacity 200ms ease;
-
-  &:hover {
-    opacity: 1;
-  }
-`;
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -99,7 +86,7 @@ export default function Footer() {
         <span className={brandStyles}>udfnd</span>
         <div className={socialLinksStyles}>
           <a
-            href="https://github.com"
+            href="https://github.com/hsm9300"
             target="_blank"
             rel="noopener noreferrer"
             className={socialLinkStyles}
@@ -110,7 +97,7 @@ export default function Footer() {
             </svg>
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://linkedin.com/in/hsm9300"
             target="_blank"
             rel="noopener noreferrer"
             className={socialLinkStyles}
@@ -121,7 +108,7 @@ export default function Footer() {
             </svg>
           </a>
           <a
-            href="mailto:hello@udfnd.com"
+            href="mailto:hsm9300@naver.com"
             className={socialLinkStyles}
             aria-label="Email"
           >
@@ -131,21 +118,6 @@ export default function Footer() {
           </a>
         </div>
         <p className={copyrightStyles}>&copy; {currentYear} udfnd</p>
-        <a
-          href="https://giphy.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={giphyAttributionStyles}
-          aria-label="Powered by GIPHY"
-        >
-          <Image
-            src="/images/giphyLogo.png"
-            alt="Powered by GIPHY"
-            width={100}
-            height={27}
-            unoptimized
-          />
-        </a>
       </div>
     </footer>
   );
