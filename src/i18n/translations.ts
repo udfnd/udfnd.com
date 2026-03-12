@@ -19,9 +19,17 @@ export const translations = {
         title: '경력',
         items: [
           {
+            company: 'DirectorLabs',
+            role: 'Product Engineer (정규직)',
+            period: '2026년 3월 – 현재',
+            location: '서울 및 미국',
+            description: 'AI 모델들을 활용한 다양한 분야에 (미디어 아트 등) 활용할 수 있는 이미지/비디오 편집 제품 제작을 맡고 있습니다. 전 카카오브레인 및 Runway 멤버들과 함께하고 있으며, Adobe 프로그램을 대체하는 것을 최종 목표로 삼고 있습니다.',
+            technologies: [],
+          },
+          {
             company: '기깔콘',
             role: 'Frontend Engineer (정규직)',
-            period: '2025년 9월 – 현재',
+            period: '2025년 9월 – 2026년 2월',
             location: '서울',
             description: '학원 ERP 개발 초기 과정부터 프론트엔드 리드를 맡고 있습니다. 기술 스택 선정, 아키텍처 설계, 주요 기능 구현 등을 담당하고 있으며, 다양한 AI 코딩 에이전트와 MCP 등을 활용해서 현대 개발에 최적화된 환경을 찾고 있습니다.',
             technologies: [
@@ -211,9 +219,17 @@ export const translations = {
         title: 'Experience',
         items: [
           {
+            company: 'DirectorLabs',
+            role: 'Product Engineer (Full-time)',
+            period: 'Mar 2026 – Present',
+            location: 'Seoul & United States',
+            description: 'Building image/video editing products powered by AI models for diverse fields including media art. Working alongside former Kakao Brain and Runway members, with the ultimate goal of replacing Adobe products.',
+            technologies: [],
+          },
+          {
             company: 'Gigalkon',
             role: 'Frontend Engineer (Full-time)',
-            period: 'Sep 2025 – Present',
+            period: 'Sep 2025 – Feb 2026',
             location: 'Seoul',
             description: 'Leading frontend development from the early stages of Academy ERP development. Responsible for technology stack selection, architecture design, and core feature implementation. Exploring optimized modern development environments utilizing various AI coding agents and MCP.',
             technologies: [
@@ -403,9 +419,17 @@ export const translations = {
         title: '工作经历',
         items: [
           {
+            company: 'DirectorLabs',
+            role: '产品工程师（全职）',
+            period: '2026年3月 – 至今',
+            location: '首尔及美国',
+            description: '负责利用AI模型构建可应用于媒体艺术等多个领域的图像/视频编辑产品。与前Kakao Brain及Runway成员合作，最终目标是取代Adobe产品。',
+            technologies: [],
+          },
+          {
             company: 'Gigalkon',
             role: '前端工程师（全职）',
-            period: '2025年9月 – 至今',
+            period: '2025年9月 – 2026年2月',
             location: '首尔',
             description: '从学院ERP开发初期阶段担任前端负责人。负责技术栈选型、架构设计和核心功能实现，利用各类AI编程代理和MCP探索最优化的现代开发环境。',
             technologies: [
@@ -595,9 +619,17 @@ export const translations = {
         title: '職歴',
         items: [
           {
+            company: 'DirectorLabs',
+            role: 'プロダクトエンジニア（正社員）',
+            period: '2026年3月 – 現在',
+            location: 'ソウル及びアメリカ',
+            description: 'AIモデルを活用し、メディアアートなど多様な分野に応用可能な画像・動画編集プロダクトを開発中。元Kakao Brain及びRunwayのメンバーと共に、Adobe製品の代替を最終目標として取り組んでいます。',
+            technologies: [],
+          },
+          {
             company: 'Gigalkon',
             role: 'フロントエンドエンジニア（正社員）',
-            period: '2025年9月 – 現在',
+            period: '2025年9月 – 2026年2月',
             location: 'ソウル',
             description: '学習塾ERP開発の初期段階からフロントエンドリードを担当。技術スタック選定、アーキテクチャ設計、コア機能実装を担当。各種AIコーディングエージェントやMCPを活用し、最適化されたモダン開発環境を探求中。',
             technologies: [

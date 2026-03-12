@@ -5,6 +5,7 @@ import {
   SkillsSection,
   ContactSection,
 } from '@/components/home';
+import AnimatedBackground from '@/components/ui/AnimatedBackground';
 
 const mainStyles = css`
   min-height: 100vh;
@@ -13,6 +14,7 @@ const mainStyles = css`
 export default function Home() {
   return (
     <main className={mainStyles}>
+      <AnimatedBackground />
       <HeroSection />
       <ExperienceSection />
       <SkillsSection />

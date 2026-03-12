@@ -110,9 +110,7 @@ const itemContentStyles = css`
   transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    border-color: ${colors.accent.secondary};
-    transform: translateX(4px);
-    box-shadow: -4px 0 0 ${colors.accent.primary};
+    border-color: ${colors.accent.primary};
   }
 `;
 
