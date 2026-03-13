@@ -15,7 +15,7 @@ const containerStyles = css`
 const bgImageStyles = css`
   position: absolute;
   inset: 0;
-  background: url('/images/background.webp') center center / cover no-repeat fixed;
+  background: url('/images/background.webp') center center / contain no-repeat;
 `;
 
 const overlayStyles = css`
@@ -23,8 +23,8 @@ const overlayStyles = css`
   inset: 0;
   background: black;
   will-change: -webkit-mask-image;
-  -webkit-mask-image: radial-gradient(circle 160px at -9999px -9999px, transparent 20%, black 70%);
-  mask-image: radial-gradient(circle 160px at -9999px -9999px, transparent 20%, black 70%);
+  -webkit-mask-image: radial-gradient(circle 160px at -9999px -9999px, rgba(0,0,0,0.6) 20%, black 70%);
+  mask-image: radial-gradient(circle 160px at -9999px -9999px, rgba(0,0,0,0.6) 20%, black 70%);
 `;
 
 const gridOverlayStyles = css`
@@ -58,7 +58,7 @@ export default function AnimatedBackground() {
       cur.x += (tgt.x - cur.x) * LERP;
       cur.y += (tgt.y - cur.y) * LERP;
 
-      const gradient = `radial-gradient(circle 160px at ${cur.x}px ${cur.y}px, transparent 20%, black 70%)`;
+      const gradient = `radial-gradient(circle 160px at ${cur.x}px ${cur.y}px, rgba(0,0,0,0.6) 20%, black 70%)`;
       overlay.style.webkitMaskImage = gradient;
       overlay.style.maskImage = gradient;
 
