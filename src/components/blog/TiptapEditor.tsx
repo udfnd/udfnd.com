@@ -7,11 +7,12 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
 import { ResizableImageExtension } from './extensions/ResizableImageExtension';
+import { StarRatingExtension } from './extensions/StarRatingExtension';
 import { css } from '@emotion/css';
 import { colors, typography, spacing, radius, transition } from '@/styles/tokens';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic', 'image/heif'];
 
 const editorWrapperStyles = css`
   border: 1px solid ${colors.border};
@@ -244,13 +245,35 @@ export default function TiptapEditor({
   const handleFileUpload = useCallback(async (file: File, editorInstance: typeof editor) => {
     if (!editorInstance) return;
 
+    setUploadError(null);
+
+    const url = await uploadImage(file);
+    if (url) {
+      editorInstance.chain().focus().setImage({ src: url }).run();
+    }
+  }, [uploadImage]);
+
+  const handleMultipleFileUpload = useCallback(async (files: File[], editorInstance: typeof editor) => {
+    if (!editorInstance || files.length === 0) return;
+
     setIsUploading(true);
     setUploadError(null);
 
     try {
-      const url = await uploadImage(file);
-      if (url) {
-        editorInstance.chain().focus().setImage({ src: url }).run();
+      const imageFiles = files.filter(f => f.type.startsWith('image/'));
+      const urls: string[] = [];
+
+      for (const file of imageFiles) {
+        const url = await uploadImage(file);
+        if (url) urls.push(url);
+      }
+
+      if (urls.length > 0) {
+        const chain = editorInstance.chain().focus();
+        for (const url of urls) {
+          chain.setImage({ src: url }).createParagraphNear();
+        }
+        chain.run();
       }
     } finally {
       setIsUploading(false);
@@ -282,6 +305,7 @@ export default function TiptapEditor({
           loading: 'lazy',
         },
       }),
+      StarRatingExtension,
     ],
     content,
     immediatelyRender: false, // SSR hydration mismatch 방지
@@ -292,18 +316,16 @@ export default function TiptapEditor({
       attributes: {
         class: 'tiptap-editor',
       },
-      handleDrop: (view, event, _slice, moved) => {
+      handleDrop: (_view, event, _slice, moved) => {
         if (moved) return false;
 
         const files = event.dataTransfer?.files;
-        const firstFile = files?.[0];
-        if (firstFile && firstFile.type.startsWith('image/')) {
+        if (!files || files.length === 0) return false;
+
+        const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+        if (imageFiles.length > 0) {
           event.preventDefault();
-          // Get editor instance from view
-          const editorInstance = view.dom.closest('.tiptap-editor-wrapper');
-          if (editorInstance) {
-            handleFileUpload(firstFile, editor);
-          }
+          handleMultipleFileUpload(imageFiles, editor);
           return true;
         }
         return false;
@@ -352,11 +374,11 @@ export default function TiptapEditor({
   };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !editor) return;
+    const files = e.target.files;
+    if (!files || files.length === 0 || !editor) return;
 
-    await handleFileUpload(file, editor);
-    e.target.value = ''; // Reset input
+    await handleMultipleFileUpload(Array.from(files), editor);
+    e.target.value = '';
   };
 
   return (
@@ -482,11 +504,20 @@ export default function TiptapEditor({
         >
           {isUploading ? '...' : 'IMG'}
         </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().insertContent('<div data-type="star-rating" data-score="0"></div>').run()}
+          className={toolbarButtonStyles}
+          title="Insert Star Rating"
+        >
+          ★
+        </button>
 
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp"
+          accept="image/jpeg,image/png,image/gif,image/webp,image/heic,image/heif,.heic,.heif"
+          multiple
           onChange={handleFileSelect}
           style={{ display: 'none' }}
         />

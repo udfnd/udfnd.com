@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { colors, typography, layout, spacing, radius, gradientText, transition } from '@/styles/tokens';
 import type { Post } from '@/types/post';
+import { useStarRatingRenderer } from '@/components/blog/StarRatingRenderer';
 
 const mainStyles = css`
   min-height: 100vh;
@@ -184,6 +185,14 @@ const contentStyles = css`
       margin-top: ${spacing[3]};
     }
   }
+
+  [data-type="star-rating"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    vertical-align: middle;
+    margin: 0 ${spacing[2]};
+  }
 `;
 
 const actionsStyles = css`
@@ -233,6 +242,8 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+
+  useStarRatingRenderer(post);
 
   useEffect(() => {
     const fetchPost = async () => {

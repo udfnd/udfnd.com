@@ -53,6 +53,11 @@ next-env.d.ts
 # Claude Code
 .claude/
 
+# MoAI / Agency
+.moai/
+.agency/
+.mcp.json
+
 # OS
 Thumbs.db
 ehthumbs.db

@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/server';
 import { v4 as uuidv4 } from 'uuid';
+import sharp from 'sharp';
+import convert from 'heic-convert';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic', 'image/heif'];
+const HEIC_TYPES = ['image/heic', 'image/heif'];
 const BUCKET_NAME = 'blog-images';
 
 function sanitizeFilename(filename: string): string {
@@ -62,17 +65,26 @@ export async function POST(request: NextRequest) {
     const uuid = uuidv4().slice(0, 8);
     const sanitizedName = sanitizeFilename(file.name);
     const datePath = getDatePath();
-    const filePath = `${datePath}/${uuid}-${sanitizedName}`;
+    let filePath = `${datePath}/${uuid}-${sanitizedName}`;
 
     // Convert File to ArrayBuffer then to Buffer
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    let buffer = Buffer.from(arrayBuffer);
+    let contentType = file.type;
+
+    // Convert HEIC/HEIF to WebP
+    if (HEIC_TYPES.includes(file.type)) {
+      const jpegBuffer = await convert({ buffer, format: 'JPEG', quality: 1 });
+      buffer = await sharp(Buffer.from(jpegBuffer)).webp({ quality: 90 }).toBuffer();
+      contentType = 'image/webp';
+      filePath = filePath.replace(/\.hei[cf]$/i, '.webp');
+    }
 
     // Upload to Supabase Storage
     const { error: uploadError } = await supabaseAdmin.storage
       .from(BUCKET_NAME)
       .upload(filePath, buffer, {
-        contentType: file.type,
+        contentType,
         cacheControl: '31536000', // 1 year cache
         upsert: false,
       });
