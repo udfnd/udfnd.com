@@ -69,12 +69,12 @@ export async function POST(request: NextRequest) {
 
     // Convert File to ArrayBuffer then to Buffer
     const arrayBuffer = await file.arrayBuffer();
-    let buffer = Buffer.from(arrayBuffer);
+    let buffer: Buffer = Buffer.from(arrayBuffer);
     let contentType = file.type;
 
     // Convert HEIC/HEIF to WebP
     if (HEIC_TYPES.includes(file.type)) {
-      const jpegBuffer = await convert({ buffer, format: 'JPEG', quality: 1 });
+      const jpegBuffer = await convert({ buffer: arrayBuffer, format: 'JPEG', quality: 1 });
       buffer = await sharp(Buffer.from(jpegBuffer)).webp({ quality: 90 }).toBuffer();
       contentType = 'image/webp';
       filePath = filePath.replace(/\.hei[cf]$/i, '.webp');
