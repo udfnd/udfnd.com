@@ -19,14 +19,6 @@ export const translations = {
         title: '경력',
         items: [
           {
-            company: 'DirectorLabs',
-            role: 'Product Engineer (정규직)',
-            period: '2026년 3월 – 현재',
-            location: '서울 및 미국',
-            description: 'AI 모델들을 활용한 다양한 분야에 (미디어 아트 등) 활용할 수 있는 이미지/비디오 편집 제품 제작을 맡고 있습니다. 전 카카오브레인 및 Runway 멤버들과 함께하고 있으며, Adobe 프로그램을 대체하는 것을 최종 목표로 삼고 있습니다.',
-            technologies: [],
-          },
-          {
             company: '기깔콘',
             role: 'Frontend Engineer (정규직)',
             period: '2025년 9월 – 2026년 2월',
@@ -218,14 +210,6 @@ export const translations = {
       experience: {
         title: 'Experience',
         items: [
-          {
-            company: 'DirectorLabs',
-            role: 'Product Engineer (Full-time)',
-            period: 'Mar 2026 – Present',
-            location: 'Seoul & United States',
-            description: 'Building image/video editing products powered by AI models for diverse fields including media art. Working alongside former Kakao Brain and Runway members, with the ultimate goal of replacing Adobe products.',
-            technologies: [],
-          },
           {
             company: 'Gigalkon',
             role: 'Frontend Engineer (Full-time)',
@@ -419,14 +403,6 @@ export const translations = {
         title: '工作经历',
         items: [
           {
-            company: 'DirectorLabs',
-            role: '产品工程师（全职）',
-            period: '2026年3月 – 至今',
-            location: '首尔及美国',
-            description: '负责利用AI模型构建可应用于媒体艺术等多个领域的图像/视频编辑产品。与前Kakao Brain及Runway成员合作，最终目标是取代Adobe产品。',
-            technologies: [],
-          },
-          {
             company: 'Gigalkon',
             role: '前端工程师（全职）',
             period: '2025年9月 – 2026年2月',
@@ -618,14 +594,6 @@ export const translations = {
       experience: {
         title: '職歴',
         items: [
-          {
-            company: 'DirectorLabs',
-            role: 'プロダクトエンジニア（正社員）',
-            period: '2026年3月 – 現在',
-            location: 'ソウル及びアメリカ',
-            description: 'AIモデルを活用し、メディアアートなど多様な分野に応用可能な画像・動画編集プロダクトを開発中。元Kakao Brain及びRunwayのメンバーと共に、Adobe製品の代替を最終目標として取り組んでいます。',
-            technologies: [],
-          },
           {
             company: 'Gigalkon',
             role: 'フロントエンドエンジニア（正社員）',
