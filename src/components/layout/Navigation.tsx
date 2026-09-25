@@ -228,7 +228,6 @@ export default function Navigation() {
 
   const menuItems = [
     { href: '/', label: t.nav.home },
-    { href: '/blog', label: t.nav.blog },
   ];
 
   return (
