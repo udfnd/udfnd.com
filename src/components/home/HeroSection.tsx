@@ -17,16 +17,6 @@ const fadeInUp = keyframes`
   }
 `;
 
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
-
-const glowPulse = keyframes`
-  0%, 100% { box-shadow: 0 0 20px ${colors.accent.primaryGlow}; }
-  50% { box-shadow: 0 0 40px ${colors.accent.primaryGlow}, 0 0 60px ${colors.accent.secondaryGlow}; }
-`;
-
 const sectionStyles = css`
   min-height: 100vh;
   display: flex;
@@ -67,12 +57,6 @@ const profileImageContainerStyles = css`
   animation: ${fadeInUp} 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: 100ms;
   opacity: 0;
-  transition: border-color 300ms ease, box-shadow 300ms ease;
-
-  &:hover {
-    border-color: ${colors.accent.primary};
-    box-shadow: 0 0 24px ${colors.accent.primaryGlow};
-  }
 
   @media (min-width: 640px) {
     width: 220px;
@@ -155,17 +139,6 @@ const shortBioStyles = css`
   opacity: 0;
 `;
 
-const interestsTextStyles = css`
-  font-size: ${typography.small.size};
-  line-height: ${typography.small.lineHeight};
-  color: ${colors.faint};
-  margin-top: ${spacing[3]};
-  font-style: italic;
-  animation: ${fadeIn} 600ms ease forwards;
-  animation-delay: 600ms;
-  opacity: 0;
-`;
-
 const linksStyles = css`
   display: flex;
   align-items: center;
@@ -203,6 +176,9 @@ const linkItemStyles = css`
 
 const focusContainerStyles = css`
   margin-top: ${spacing[8]};
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing[6]};
   animation: ${fadeInUp} 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: 800ms;
   opacity: 0;
@@ -269,7 +245,6 @@ export default function HeroSection() {
             <h1 className={nameStyles}>{t.hero.name}</h1>
             <p className={locationStyles}>{t.hero.location}</p>
             <p className={shortBioStyles}>{t.hero.bio}</p>
-            <p className={interestsTextStyles}>{t.hero.interests}</p>
             <div className={linksStyles}>
               <a href="https://github.com/udfnd" target="_blank" rel="noopener noreferrer" className={linkItemStyles}>
                 <svg viewBox="0 0 24 24" fill="currentColor">
@@ -292,14 +267,18 @@ export default function HeroSection() {
             </div>
 
             <div className={focusContainerStyles}>
-              <p className={focusSectionTitleStyles}>{t.hero.focusTitle}</p>
-              <div className={focusListStyles}>
-                {t.hero.focuses.map((focus) => (
-                  <span key={focus} className={focusItemStyles}>
-                    {focus}
-                  </span>
-                ))}
-              </div>
+              {t.hero.focusGroups.map((group) => (
+                <div key={group.title}>
+                  <h2 className={focusSectionTitleStyles}>{group.title}</h2>
+                  <ul className={focusListStyles}>
+                    {group.items.map((item) => (
+                      <li key={item} className={focusItemStyles}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
         </header>

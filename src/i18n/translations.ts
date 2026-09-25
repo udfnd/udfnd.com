@@ -3,16 +3,19 @@ import { Language } from '@/stores/useAppStore';
 export const translations = {
     ko: {
       hero: {
-        role: 'Frontend Engineer',
+        role: 'Product & Frontend Engineer',
         name: '한승목',
-        bio: 'AI 기반 소프트웨어 개발과 사용자 중심 제품 설계에 관심이 많습니다. 사용자 경험을 향상시키고 비즈니스 성장을 이끄는 확장 가능한 웹 애플리케이션을 구축하는 것에 열정을 가지고 있습니다.',
-        interests: '아마추어 드러머, 포커 플레이어, 애니메이션과 게임 애호가.',
+        bio: 'AI agent를 활용한 제품 개발과 인간과 AI가 효율적으로 상호작용하는 방식에 관심이 많습니다. Figma, Jira 등을 활용한 전형적인 소프트웨어 개발 과정부터 AI-native 개발 과정까지 모두 경험했습니다.',
         location: '서울, 대한민국',
-        focusTitle: '관심 분야',
-        focuses: [
-          'AI 기반 개발',
-          '웹 애플리케이션',
-          'UI/UX 설계',
+        focusGroups: [
+          {
+            title: 'For work:',
+            items: ['AI-native 개발론', 'HAI (Human-AI Interaction)', 'UI/UX 설계'],
+          },
+          {
+            title: 'For hobby:',
+            items: ['애니메이션 및 게임 애호가', '포커 플레이어', '아마추어 드러머'],
+          },
         ],
       },
       experience: {
@@ -138,37 +141,6 @@ export const translations = {
           },
         ],
       },
-      skills: {
-        title: '기술 스택',
-        categories: [
-          {
-            title: 'Frontend',
-            skills: [
-              'React',
-              'Next.js',
-              'TypeScript',
-              'Emotion',
-              'Zustand',
-            ],
-          },
-          {
-            title: 'Backend',
-            skills: [
-              'Node.js',
-              'Express.js',
-              'AWS',
-              'Supabase',
-            ],
-          },
-          {
-            title: 'AI Tools',
-            skills: [
-              'Claude Code',
-              'Codex',
-            ],
-          },
-        ],
-      },
       languages: {
         title: '언어 능력',
         items: [
@@ -195,16 +167,19 @@ export const translations = {
     },
     en: {
       hero: {
-        role: 'Frontend Engineer',
+        role: 'Product & Frontend Engineer',
         name: 'Seungmok Han',
-        bio: 'Focused on AI-driven software development and user-centric product design. Passionate about building scalable web applications that enhance user experience and drive business growth.',
-        interests: 'Amateur drummer, poker player, anime and gaming enthusiast.',
+        bio: 'Interested in building products with AI agents and making human-AI interaction more efficient. Experienced in conventional software development with tools like Figma and Jira, as well as AI-native workflows.',
         location: 'Seoul, South Korea',
-        focusTitle: 'Focus Areas',
-        focuses: [
-          'AI-driven Development',
-          'Web Applications',
-          'UI/UX Design',
+        focusGroups: [
+          {
+            title: 'For work:',
+            items: ['AI-native development methods', 'HAI (Human-AI Interaction)', 'UI/UX design'],
+          },
+          {
+            title: 'For hobbies:',
+            items: ['Anime and gaming enthusiast', 'Poker player', 'Amateur drummer'],
+          },
         ],
       },
       experience: {
@@ -330,37 +305,6 @@ export const translations = {
           },
         ],
       },
-      skills: {
-        title: 'Skills',
-        categories: [
-          {
-            title: 'Frontend',
-            skills: [
-              'React',
-              'Next.js',
-              'TypeScript',
-              'Emotion',
-              'Zustand',
-            ],
-          },
-          {
-            title: 'Backend',
-            skills: [
-              'Node.js',
-              'Express.js',
-              'AWS',
-              'Supabase',
-            ],
-          },
-          {
-            title: 'AI Tools',
-            skills: [
-              'Claude Code',
-              'Codex',
-            ],
-          },
-        ],
-      },
       languages: {
         title: 'Languages',
         items: [
@@ -387,16 +331,19 @@ export const translations = {
     },
     zh: {
       hero: {
-        role: '前端工程师',
+        role: '产品与前端工程师',
         name: '韩承穆',
-        bio: '专注于AI驱动的软件开发和以用户为中心的产品设计。致力于构建可扩展的Web应用程序，提升用户体验并推动业务增长。',
-        interests: '业余鼓手、扑克爱好者，热爱动漫和游戏。',
+        bio: '关注如何利用 AI 智能体开发产品，以及如何让人与 AI 更高效地交互。既有使用 Figma、Jira 等工具进行传统软件开发的经验，也实践过 AI 原生开发流程。',
         location: '韩国首尔',
-        focusTitle: '专注领域',
-        focuses: [
-          'AI驱动开发',
-          'Web应用程序',
-          'UI/UX设计',
+        focusGroups: [
+          {
+            title: '工作方向：',
+            items: ['AI 原生开发方法', 'HAI (Human-AI Interaction)', 'UI/UX 设计'],
+          },
+          {
+            title: '兴趣爱好：',
+            items: ['动漫与游戏爱好者', '扑克玩家', '业余鼓手'],
+          },
         ],
       },
       experience: {
@@ -522,37 +469,6 @@ export const translations = {
           },
         ],
       },
-      skills: {
-        title: '技术栈',
-        categories: [
-          {
-            title: '前端',
-            skills: [
-              'React',
-              'Next.js',
-              'TypeScript',
-              'Emotion',
-              'Zustand',
-            ],
-          },
-          {
-            title: '后端',
-            skills: [
-              'Node.js',
-              'Express.js',
-              'AWS',
-              'Supabase',
-            ],
-          },
-          {
-            title: 'AI工具',
-            skills: [
-              'Claude Code',
-              'Codex',
-            ],
-          },
-        ],
-      },
       languages: {
         title: '语言能力',
         items: [
@@ -579,16 +495,19 @@ export const translations = {
     },
     ja: {
       hero: {
-        role: 'フロントエンドエンジニア',
+        role: 'プロダクト・フロントエンドエンジニア',
         name: 'ハン・スンモク',
-        bio: 'AI駆動のソフトウェア開発とユーザー中心のプロダクト設計に注力。ユーザー体験を向上させ、ビジネス成長を促進するスケーラブルなWebアプリケーションの構築に情熱を注ぐ。',
-        interests: 'アマチュアドラマー、ポーカー愛好家、アニメとゲーム好き。',
+        bio: 'AIエージェントを活用したプロダクト開発と、人とAIが効率よくやり取りする方法に関心があります。FigmaやJiraなどを使う従来のソフトウェア開発から、AIネイティブな開発まで経験してきました。',
         location: '韓国ソウル',
-        focusTitle: '専門分野',
-        focuses: [
-          'AI駆動開発',
-          'Webアプリケーション',
-          'UI/UXデザイン',
+        focusGroups: [
+          {
+            title: '仕事：',
+            items: ['AIネイティブな開発手法', 'HAI (Human-AI Interaction)', 'UI/UXデザイン'],
+          },
+          {
+            title: '趣味：',
+            items: ['アニメ・ゲーム好き', 'ポーカープレイヤー', 'アマチュアドラマー'],
+          },
         ],
       },
       experience: {
@@ -711,37 +630,6 @@ export const translations = {
             issuer: 'Intel国際科学技術フェア',
             year: '2017年',
             description: '2017年Intel ISEF出場',
-          },
-        ],
-      },
-      skills: {
-        title: '技術スタック',
-        categories: [
-          {
-            title: 'フロントエンド',
-            skills: [
-              'React',
-              'Next.js',
-              'TypeScript',
-              'Emotion',
-              'Zustand',
-            ],
-          },
-          {
-            title: 'バックエンド',
-            skills: [
-              'Node.js',
-              'Express.js',
-              'AWS',
-              'Supabase',
-            ],
-          },
-          {
-            title: 'AIツール',
-            skills: [
-              'Claude Code',
-              'Codex',
-            ],
           },
         ],
       },

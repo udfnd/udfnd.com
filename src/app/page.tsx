@@ -2,7 +2,7 @@ import { css } from '@emotion/css';
 import {
   HeroSection,
   ExperienceSection,
-  SkillsSection,
+  LanguagesSection,
   ContactSection,
 } from '@/components/home';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
@@ -17,7 +17,7 @@ export default function Home() {
       <AnimatedBackground />
       <HeroSection />
       <ExperienceSection />
-      <SkillsSection />
+      <LanguagesSection />
       <ContactSection />
     </main>
   );
