@@ -22,11 +22,19 @@ export const translations = {
         title: '경력',
         items: [
           {
+            company: 'DirectorLabs',
+            role: 'Product & Frontend Engineer (인턴)',
+            period: '2026년 3월 – 2026년 5월',
+            location: '',
+            description: '비주얼 크리에이터를 위한 에이전트 플랫폼에서 제품 및 프론트엔드 개발을 맡았습니다. 기술 스타트업의 제품 개발 방식과 시스템 디자인의 기초를 익히고, AI agent를 활용한 제품에서 중요하게 고려해야 할 요소를 배웠습니다.',
+            technologies: [],
+          },
+          {
             company: '기깔콘',
             role: 'Frontend Engineer (정규직)',
             period: '2025년 9월 – 2026년 2월',
             location: '서울',
-            description: '학원 ERP 개발 초기 과정부터 프론트엔드 리드를 맡고 있습니다. 기술 스택 선정, 아키텍처 설계, 주요 기능 구현 등을 담당하고 있으며, 다양한 AI 코딩 에이전트와 MCP 등을 활용해서 현대 개발에 최적화된 환경을 찾고 있습니다.',
+            description: '학원 ERP 개발 초기부터 프론트엔드 리드를 맡았습니다. 기술 스택 선정, 아키텍처 설계, 주요 기능 구현을 담당했으며, 다양한 AI 코딩 에이전트와 MCP를 활용해 개발 환경을 개선할 방법을 탐색했습니다.',
             technologies: [
               'React',
               'Next.js',
@@ -186,11 +194,19 @@ export const translations = {
         title: 'Experience',
         items: [
           {
+            company: 'DirectorLabs',
+            role: 'Product & Frontend Engineer (Intern)',
+            period: 'Mar 2026 – May 2026',
+            location: '',
+            description: 'Worked on product and frontend development for an agent platform for visual creators. Learned how a technology startup develops products, the fundamentals of system design, and key considerations when building products with AI agents.',
+            technologies: [],
+          },
+          {
             company: 'Gigalkon',
             role: 'Frontend Engineer (Full-time)',
             period: 'Sep 2025 – Feb 2026',
             location: 'Seoul',
-            description: 'Leading frontend development from the early stages of Academy ERP development. Responsible for technology stack selection, architecture design, and core feature implementation. Exploring optimized modern development environments utilizing various AI coding agents and MCP.',
+            description: 'Led frontend development from the early stages of an ERP system for private academies. Selected the technology stack, designed the architecture, and implemented core features. Explored ways to improve the development environment using AI coding agents and MCP.',
             technologies: [
               'React',
               'Next.js',
@@ -350,11 +366,19 @@ export const translations = {
         title: '工作经历',
         items: [
           {
+            company: 'DirectorLabs',
+            role: '产品与前端工程师（实习）',
+            period: '2026年3月 – 2026年5月',
+            location: '',
+            description: '负责面向视觉创作者的智能体平台的产品与前端开发。在此期间，学习了科技初创公司的产品开发方式和系统设计基础，也了解了开发集成 AI 智能体的产品时需要重点考虑的因素。',
+            technologies: [],
+          },
+          {
             company: 'Gigalkon',
             role: '前端工程师（全职）',
             period: '2025年9月 – 2026年2月',
             location: '首尔',
-            description: '从学院ERP开发初期阶段担任前端负责人。负责技术栈选型、架构设计和核心功能实现，利用各类AI编程代理和MCP探索最优化的现代开发环境。',
+            description: '曾在培训机构 ERP 系统的开发初期担任前端负责人，负责技术栈选型、架构设计和核心功能实现，并使用各类 AI 编程智能体和 MCP 探索了改善开发环境的方法。',
             technologies: [
               'React',
               'Next.js',
@@ -514,11 +538,19 @@ export const translations = {
         title: '職歴',
         items: [
           {
+            company: 'DirectorLabs',
+            role: 'プロダクト・フロントエンドエンジニア（インターン）',
+            period: '2026年3月 – 2026年5月',
+            location: '',
+            description: 'ビジュアルクリエイター向けのエージェントプラットフォームで、プロダクトとフロントエンドの開発を担当しました。技術系スタートアップにおけるプロダクト開発の進め方とシステム設計の基礎を学び、AIエージェントを組み込んだプロダクトで重視すべき点への理解を深めました。',
+            technologies: [],
+          },
+          {
             company: 'Gigalkon',
             role: 'フロントエンドエンジニア（正社員）',
             period: '2025年9月 – 2026年2月',
             location: 'ソウル',
-            description: '学習塾ERP開発の初期段階からフロントエンドリードを担当。技術スタック選定、アーキテクチャ設計、コア機能実装を担当。各種AIコーディングエージェントやMCPを活用し、最適化されたモダン開発環境を探求中。',
+            description: '学習塾向けERPシステムの開発初期からフロントエンドをリードしました。技術スタックの選定、アーキテクチャ設計、主要機能の実装を担当し、各種AIコーディングエージェントやMCPを活用して開発環境を改善する方法を探りました。',
             technologies: [
               'React',
               'Next.js',

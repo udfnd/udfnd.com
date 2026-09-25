@@ -265,7 +265,7 @@ export default function ExperienceSection() {
                   <span className={periodStyles}>{exp.period}</span>
                 </div>
                 <p className={roleStyles}>{exp.role}</p>
-                <p className={locationStyles}>{exp.location}</p>
+                {exp.location && <p className={locationStyles}>{exp.location}</p>}
                 <p className={descriptionStyles}>{exp.description}</p>
                 {exp.technologies.length > 0 && (
                   <div className={tagsStyles}>
