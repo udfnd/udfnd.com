@@ -22,6 +22,14 @@ export const translations = {
         title: '경력',
         items: [
           {
+            company: 'Immensus',
+            role: 'Head of Engineering (정규직)',
+            period: '2026년 6월 – 현재',
+            location: '',
+            description: '기업의 AX를 돕는 SaaS Underpin의 개발 리드로 참여하고 있습니다.',
+            technologies: [],
+          },
+          {
             company: 'DirectorLabs',
             role: 'Product & Frontend Engineer (인턴)',
             period: '2026년 3월 – 2026년 5월',
@@ -193,6 +201,14 @@ export const translations = {
       experience: {
         title: 'Experience',
         items: [
+          {
+            company: 'Immensus',
+            role: 'Head of Engineering (Full-time)',
+            period: 'Jun 2026 – Present',
+            location: '',
+            description: 'Leading development of Underpin, a SaaS platform for enterprise AI transformation (AX).',
+            technologies: [],
+          },
           {
             company: 'DirectorLabs',
             role: 'Product & Frontend Engineer (Intern)',
@@ -366,6 +382,14 @@ export const translations = {
         title: '工作经历',
         items: [
           {
+            company: 'Immensus',
+            role: '工程负责人（全职）',
+            period: '2026年6月 – 至今',
+            location: '',
+            description: '正在牵头开发 Underpin，这是一款帮助企业推进 AI 转型（AX）的 SaaS 产品。',
+            technologies: [],
+          },
+          {
             company: 'DirectorLabs',
             role: '产品与前端工程师（实习）',
             period: '2026年3月 – 2026年5月',
@@ -537,6 +561,14 @@ export const translations = {
       experience: {
         title: '職歴',
         items: [
+          {
+            company: 'Immensus',
+            role: 'エンジニアリング責任者（正社員）',
+            period: '2026年6月 – 現在',
+            location: '',
+            description: '企業のAIトランスフォーメーション（AX）を支援するSaaS「Underpin」で、開発リードを務めています。',
+            technologies: [],
+          },
           {
             company: 'DirectorLabs',
             role: 'プロダクト・フロントエンドエンジニア（インターン）',
